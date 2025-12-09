@@ -18,7 +18,7 @@ app = FastAPI(lifespan=lifespan)
 async def upload_file(
     file:UploadFile = File(...),
     caption: str = Form(""),
-    session: AsyncSession = Depends(get_async_session)
+    session:  AsyncSession = Depends(get_async_session)
 ):
     post = Post(
         caption = caption,
@@ -52,3 +52,4 @@ async def get_feed(
                 
             }
         )
+    return {"posts": post_data}

@@ -11,7 +11,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app_1 = FastAPI(lifespan=lifespan)
 
 
 text_post = {
