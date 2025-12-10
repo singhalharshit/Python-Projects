@@ -1,6 +1,7 @@
 from typing import Union,Dict
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
+import uvicorn
 
 app = FastAPI()
 
@@ -45,3 +46,6 @@ def complete_task(id:int):
             task['is_completed']=True
             return task
     raise HTTPException(status_code=404,detail='Task not found')
+
+if __name__ == "__main__":
+    uvicorn.run("app:app", host= "0.0.0.0", port=8000, reload=True)
