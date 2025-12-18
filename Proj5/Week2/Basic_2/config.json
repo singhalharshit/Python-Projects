@@ -1,0 +1,7 @@
+{
+  "service_name": "config-checker",
+  "version": "1.0.0",
+  "environment": "development",
+  "debug": false
+}
+
