@@ -1,6 +1,8 @@
+#storage.py
+
 from typing import Dict,Optional
 from datetime import datetime
-from models import User, UserCreate
+from models import User, UserCreate,UserUpdate
 from fastapi import HTTPException
 
 _users: Dict[int, User] = {}
@@ -33,13 +35,36 @@ def create_user(user_data: UserCreate) -> User:
 
 def all_active_user(is_active:bool | None=None):
     user = list(_users.values())
+    if is_active is None:
+        return user
     return [i for i in user if i.is_active==is_active]
 
 
-def user_list(id:int):
-    if id in list(_users.keys()):
-        return _users[id]
-    raise HTTPException(status_code=404,detail="User Not Found")
+def get_user_by_id(user_id: int) -> User | None:
+    return _users.get(user_id)
 
 
-def update_user
+def update_user(user_id: int, user_data: UserUpdate) -> User | None:
+    if user_id not in _users:
+        return None
+
+    user = _users[user_id]
+
+    # Handle email update with uniqueness check
+    if user_data.email:
+        if (
+            user_data.email in _email_index
+            and _email_index[user_data.email] != user_id
+        ):
+            raise ValueError("Email already exists")
+
+        # update email index
+        del _email_index[user.email]
+        _email_index[user_data.email] = user_id
+        user.email = user_data.email
+
+    if user_data.username:
+        user.username = user_data.username
+
+    _users[user_id] = user
+    return user
