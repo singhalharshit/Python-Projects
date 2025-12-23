@@ -17,3 +17,8 @@ def create_user(user: UserCreate):
 @router.get("/user")
 def get_user(is_active:Optional[bool]):
     return storage.all_active_user(is_active)
+
+
+@router.get("/users/{id}")
+def user_by_id(id:int):
+    return storage.user_list(id)

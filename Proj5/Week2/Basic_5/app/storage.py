@@ -1,6 +1,7 @@
 from typing import Dict,Optional
 from datetime import datetime
 from models import User, UserCreate
+from fastapi import HTTPException
 
 _users: Dict[int, User] = {}
 _email_index: Dict[str, int] = {}
@@ -33,4 +34,12 @@ def create_user(user_data: UserCreate) -> User:
 def all_active_user(is_active:bool | None=None):
     user = list(_users.values())
     return [i for i in user if i.is_active==is_active]
-    
+
+
+def user_list(id:int):
+    if id in list(_users.keys()):
+        return _users[id]
+    raise HTTPException(status_code=404,detail="User Not Found")
+
+
+def update_user
