@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict,Optional
 from datetime import datetime
 from models import User, UserCreate
 
@@ -29,5 +29,8 @@ def create_user(user_data: UserCreate) -> User:
 
     return user
 
-def all_active_user(is_active):
+
+def all_active_user(is_active:bool | None=None):
+    user = list(_users.values())
+    return [i for i in user if i.is_active==is_active]
     

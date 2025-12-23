@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from models import UserCreate
+from typing import Optional
 import storage
 
 router = APIRouter()
@@ -11,3 +12,8 @@ def create_user(user: UserCreate):
         return storage.create_user(user)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/user")
+def get_user(is_active:Optional[bool]):
+    return storage.all_active_user(is_active)
