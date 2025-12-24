@@ -1,9 +1,8 @@
 #storage.py
 
-from typing import Dict,Optional
+from typing import Dict
 from datetime import datetime
 from models import User, UserCreate,UserUpdate
-from fastapi import HTTPException
 
 _users: Dict[int, User] = {}
 _email_index: Dict[str, int] = {}
@@ -68,3 +67,11 @@ def update_user(user_id: int, user_data: UserUpdate) -> User | None:
 
     _users[user_id] = user
     return user
+
+
+def soft_delete(user_id:int):
+    if user_id not in _users:
+        return None
+    else:
+        _users[user_id].is_active=False
+    return _users[user_id]

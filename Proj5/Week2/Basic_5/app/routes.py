@@ -29,8 +29,6 @@ def user_by_id(id: int):
     return user
 
 
-
-
 @router.put("/users/{id}")
 def update_user(id: int, user: UserUpdate):
     try:
@@ -40,3 +38,11 @@ def update_user(id: int, user: UserUpdate):
         return updated
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+
+@router.delete("/delete/{id}")
+def soft_deleted(id:int):
+    user = storage.get_user_by_id(id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return storage.soft_delete(id)
