@@ -1,3 +1,5 @@
+# storage.py
+
 from models import Product,Product_Base,Stock_Adjust
 from typing import Dict
 from datetime import datetime
@@ -6,22 +8,23 @@ _id = 0
 _product: Dict[int,Product] = {}
 
 
-def create_product(product_values:Product_Base)->Product:
-    global _id 
-    _id +=1
-    
-    product_details= Product(
-        id = _id,
-        name = product_values.name,
-        price = product_values.price,
+def create_product(product_values: Product_Base) -> Product:
+    global _id
+    _id += 1
+
+    is_available = product_values.quantity > 0
+
+    product = Product(
+        id=_id,
+        name=product_values.name,
+        price=product_values.price,
         quantity=product_values.quantity,
-        created_at= datetime.utcnow().isoformat(),
-        is_available= True       
-        
+        created_at=datetime.utcnow().isoformat(),
+        is_available=is_available
     )
-    
-    _product[product_details.id]=product_details
-    return product_details
+
+    _product[product.id] = product
+    return product
 
 
 def get_all(is_available:bool | None=None):
@@ -36,41 +39,33 @@ def get_product_by_id(id:int):
     return _product.get(id)
 
 
-def update_product(id:int,update_item:Product_Base)-> Product:
+def update_product(id: int, update_item: Product_Base) -> Product | None:
+    if id not in _product:
+        return None
+
+    existing = _product[id]
+
+    existing.name = update_item.name
+    existing.price = update_item.price
+    existing.quantity = update_item.quantity
+    existing.is_available = update_item.quantity > 0
+
+    return existing
     
-    updated_data = Product(
-        id=id,
-        name= update_item.name,
-        price= update_item.price,
-        quantity= update_item.quantity,
-        created_at=datetime.utcnow().isoformat(),
-        is_available= True
-    )
-    _product[id]=updated_data
-    return updated_data
     
-    
-def delta(id:int,delta:int)->Product:
-    
-    product_info=_product[id]
-    quantity = _product[id].quantity
-    availability = _product[id].is_available
-    
-    total_quantity = delta+quantity
-    if total_quantity<0:
-        total_quantity=0
-        availability = False
-    
-    product_delta = Stock_Adjust(quantity=total_quantity,is_available=availability)
-    final_product= Product(
-        id=id,
-        name=product_info.name,
-        price=product_info.price,
-        quantity=product_delta.quantity,
-        created_at=datetime.utcnow().isoformat(),
-        is_available=product_delta.is_available
-    )
-    
-    _product[id]=final_product
-    return final_product
+def adjust_stock(id: int, delta: int) -> Product | None:
+    if id not in _product:
+        return None
+
+    product = _product[id]
+    new_quantity = product.quantity + delta
+
+    if new_quantity < 0:
+        raise ValueError("Stock adjustment would make quantity negative")
+
+    product.quantity = new_quantity
+    product.is_available = new_quantity > 0
+
+    return product
+
         

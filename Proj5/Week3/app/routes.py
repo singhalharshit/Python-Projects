@@ -1,7 +1,9 @@
+#routes.py
+
 from fastapi import APIRouter,HTTPException
 from models import Product_Base
 from typing import Optional
-from storage import create_product,get_all,get_product_by_id,update_product,delta
+from storage import create_product,get_all,get_product_by_id,update_product,adjust_stock
 
 router = APIRouter()
 
@@ -40,9 +42,12 @@ def updated_item(id:int,updated_values:Product_Base):
         return update_product(id,updated_values)
     
     
-@router.post('/products/{id}/adjust-stock')
-def stock_adjust(id:int,deltas:int):
-    id_check= get_product_by_id(id)
-    if not id_check:
-        raise HTTPException(status_code=404,detail="Id not found")
-    return delta(id,deltas)
+@router.post("/products/{id}/adjust-stock")
+def stock_adjust(id: int, delta: int):
+    try:
+        product = adjust_stock(id, delta)
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        return product
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
