@@ -1,0 +1,42 @@
+# FastAPI and ASGI server
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+alembic==1.13.1
+
+# Redis and Caching
+redis==5.0.1
+hiredis==2.3.2
+
+# Background Jobs
+celery==5.3.6
+celery[redis]==5.3.6
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Data Collection - Free Tier APIs
+praw==7.7.1  # Reddit API
+google-api-python-client==2.116.0  # YouTube API
+feedparser==6.0.11  # RSS feeds
+requests==2.31.0
+beautifulsoup4==4.12.3  # Minimal scraping fallback
+aiohttp==3.9.1
+
+# AI/ML
+openai==1.10.0  # Optional for premium users
+transformers==4.36.2  # Free local models
+torch==2.1.2  # For local ML
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3
+tenacity==8.2.3  # Retry logic
