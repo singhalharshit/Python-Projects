@@ -1,36 +1,46 @@
 """
-Test Onboarding API
-Verifies that the Instagram login/analysis flow works
+Test the onboarding endpoint to verify the fixes
 """
-import pytest
-from fastapi.testclient import TestClient
-from app.main import app
+import requests
+import json
 
-client = TestClient(app)
-
-def test_analyze_profile():
-    print("\n" + "📸 " + "="*76 + " 📸")
-    print("   TEST: Instagram Onboarding Flow")
-    print("📸 " + "="*76 + " 📸")
+def test_onboarding():
+    url = "http://localhost:8000/api/onboarding/analyze"
     
-    username = "tech_guy_101"
-    print(f"\n👤 Simulating login for: @{username}...")
+    payload = {
+        "user_id": "test-user-456",
+        "platform": "instagram",
+        "bio": "Tech enthusiast sharing coding tips and tutorials",
+        "follower_count": 5000,
+        "content_samples": [
+            "How to learn Python in 2024",
+            "Best VS Code extensions for productivity"
+        ]
+    }
     
-    response = client.post("/api/onboarding/analyze", json={"username": username})
+    print("Testing onboarding endpoint...")
+    print(f"URL: {url}")
+    print(f"Payload: {json.dumps(payload, indent=2)}")
+    print("\nSending request...")
     
-    if response.status_code == 200:
-        data = response.json()
-        niche = data['inferred_niche']
-        competitors = data['suggested_competitors']
+    try:
+        response = requests.post(url, json=payload)
         
-        print(f"✅ Analysis Success!")
-        print(f"   Inferred Niche: {niche}")
-        print(f"   Found {len(competitors)} Competitors:")
+        print(f"\nStatus Code: {response.status_code}")
         
-        for comp in competitors[:3]:
-            print(f"   - {comp['name']} ({comp['subs']})")
-    else:
-        print(f"❌ Failed: {response.text}")
+        if response.status_code == 200:
+            print("✅ SUCCESS!")
+            print("\nResponse:")
+            print(json.dumps(response.json(), indent=2))
+        else:
+            print(f"❌ FAILED with status {response.status_code}")
+            print("\nResponse:")
+            print(response.text)
+            
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
-    test_analyze_profile()
+    test_onboarding()

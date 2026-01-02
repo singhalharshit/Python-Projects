@@ -36,6 +36,12 @@ class TokenData(BaseModel):
     email: Optional[str] = None
 
 
+class TokenPayload(BaseModel):
+    """JWT payload schema"""
+    sub: Optional[str] = None
+    exp: Optional[int] = None
+
+
 # ===== User Schemas =====
 
 class UserBase(BaseModel):

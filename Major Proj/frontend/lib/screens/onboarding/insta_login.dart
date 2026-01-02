@@ -22,14 +22,25 @@ class _InstaLoginScreenState extends State<InstaLoginScreen> {
 
     try {
       final analysis = await _apiService.analyzeProfile(_controller.text);
+      
+      // Handle Niche parsing (can be null, Map, or String)
+      String nicheLabel = 'General';
+      if (analysis['niche'] != null) {
+        if (analysis['niche'] is Map) {
+          nicheLabel = analysis['niche']['label'] ?? 'General';
+        } else if (analysis['niche'] is String) {
+          nicheLabel = analysis['niche'];
+        }
+      }
+
       if (mounted) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => CompetitorSelectScreen(
-              username: analysis['username'],
-              niche: analysis['inferred_niche'],
-              suggestions: List<Map<String, dynamic>>.from(analysis['suggested_competitors']),
+              username: analysis['user_id'] ?? _controller.text,
+              niche: nicheLabel,
+              suggestions: List<Map<String, dynamic>>.from(analysis['competitors'] ?? []),
             ),
           ),
         );

@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = Field(default="development", env="ENVIRONMENT")
     DEBUG: bool = Field(default=True, env="DEBUG")
     CORS_ORIGINS: str = Field(default="*", env="CORS_ORIGINS")
+    API_V1_STR: str = Field(default="/api", env="API_V1_STR")
     
     # Celery (Optional for dev)
     CELERY_BROKER_URL: str = Field(default="redis://localhost:6379/0", env="CELERY_BROKER_URL")

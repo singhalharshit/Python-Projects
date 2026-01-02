@@ -1,0 +1,102 @@
+
+--- Startup at 2026-01-02 13:26:34.437439 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 13:29:38.943161 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 13:30:23.052705 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 13:31:39.344693 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:28:59.342797 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:34:04.609402 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:34:25.471102 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:38:20.264924 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:44:04.569809 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:44:26.439704 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:44:46.158240 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:45:05.833875 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:49:46.289013 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:53:25.026185 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 14:56:16.453509 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 15:06:28.520184 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators
+
+--- Startup at 2026-01-02 15:06:47.870571 ---
+Database initialized
+Querying creators...
+Found 71 creators with embeddings
+Vector Store index built with 71 creators

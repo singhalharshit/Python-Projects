@@ -45,9 +45,11 @@ class _CreatorCardState extends State<CreatorCard> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    final confidenceScore = widget.creator['confidence_score'] as double? ?? 75.0;
-    final matchReason = widget.creator['match_reason'] as String? ?? 'Recommended for you';
-    final tags = List<String>.from(widget.creator['tags'] ?? []);
+    // ✅ Safe null handling
+    final confidenceScore = (widget.creator['confidence_score'] as num?)?.toDouble() ?? 75.0;
+    final matchReason = widget.creator['match_reason']?.toString() ?? 'Recommended for you';
+    final tagsRaw = widget.creator['tags'];
+    final tags = tagsRaw != null ? List<String>.from(tagsRaw) : <String>[];
 
     return GestureDetector(
       onTap: () {
@@ -98,7 +100,7 @@ class _CreatorCardState extends State<CreatorCard> with SingleTickerProviderStat
                     
                     // Name
                     Text(
-                      widget.creator['name'],
+                      widget.creator['name']?.toString() ?? 'Unknown Creator',
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -113,7 +115,7 @@ class _CreatorCardState extends State<CreatorCard> with SingleTickerProviderStat
                     
                     // Subscriber count
                     Text(
-                      widget.creator['subs'],
+                      widget.creator['subs']?.toString() ?? 'N/A',
                       style: GoogleFonts.inter(
                         color: Colors.white38,
                         fontSize: 12,
@@ -253,8 +255,8 @@ class _CreatorCardState extends State<CreatorCard> with SingleTickerProviderStat
   }
 
   Widget _buildFallbackAvatar() {
-    final name = widget.creator['name'] as String;
-    final initials = name.split(' ').take(2).map((e) => e[0]).join().toUpperCase();
+    final name = widget.creator['name']?.toString() ?? 'U';
+    final initials = name.split(' ').take(2).map((e) => e.isNotEmpty ? e[0] : '').join().toUpperCase();
     
     return Container(
       color: AppTheme.primaryColor.withOpacity(0.3),

@@ -1,0 +1,148 @@
+Testing onboarding endpoint...
+Payload: {
+  "user_id": "test-user-999",
+  "platform": "instagram",
+  "bio": "Tech enthusiast",
+  "follower_count": 5000,
+  "content_samples": [
+    "Python tips",
+    "VS Code tricks"
+  ]
+}
+
+Sending request...
+
+============================================================
+Status Code: 200
+============================================================
+
+✅ SUCCESS!
+
+Response:
+{
+  "user_id": "test-user-999",
+  "niche": null,
+  "competitors": [
+    {
+      "creator_id": "UCkqEN8AJo6X_FKWhfpPAvRw",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.42586830258369446,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.6129341512918473
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UCZisUnzk-J2YO2uCPafwFtA",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.39937421679496765,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5996871083974838
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UC4Xt-DUAapAtkfaWWkv4OAw",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.3633008599281311,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5816504299640656
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.34833964705467224,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5741698235273361
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UC3Svpqc39DHNEPPAxboyDNw",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.3369794487953186,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5684897243976593
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UCgU0YNb_3K_2x2nKu6CDf3A",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.32968950271606445,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5648447513580322
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UCiDb9Rcr8MbvegYyNDyT_nA",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.2889019846916199,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.54445099234581
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UC7Uza_1QUOAdmXjCVIjIS8g",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.2588518559932709,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5294259279966355
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UCCCq3Y22zNNmeLfMAHFPrdg",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.2543184459209442,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5271592229604721
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    },
+    {
+      "creator_id": "UCG1LavDsZB9gxRtYXIwKosA",
+      "platform": "youtube",
+      "scores": {
+        "relevance": 0.20647497475147247,
+        "differentiation": 1.0,
+        "aspirational_distance": 0.5,
+        "total": 0.5032374873757363
+      },
+      "follower_count": null,
+      "engagement_rate": null
+    }
+  ],
+  "onboarded_at": "2026-01-02T08:00:07.490224"
+}

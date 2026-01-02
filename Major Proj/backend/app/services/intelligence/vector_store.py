@@ -218,6 +218,113 @@ class VectorStore:
         """Load FAISS index from disk"""
         self.index = faiss.read_index(filepath)
         logger.info(f"Loaded index from {filepath}")
+    
+    def get_all_creators(self, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+        """
+        Get all creators with their embeddings and metadata.
+        
+        Args:
+            limit: Optional limit on number to return
+        
+        Returns:
+            List of creator data dicts with user_id, embedding, metadata
+        """
+        creators = []
+        
+        for i, creator_id in enumerate(self.creator_ids):
+            if limit and len(creators) >= limit:
+                break
+            
+            # Get embedding from index
+            try:
+                embedding_vector = self.index.reconstruct(i)
+            except:
+                embedding_vector = None
+            
+            # Create CreatorEmbedding-like structure
+            from app.services.signals.abstract_signal import CreatorEmbedding
+            from datetime import datetime
+            
+            if embedding_vector is not None:
+                # Create a minimal CreatorEmbedding
+                embedding = CreatorEmbedding(
+                    theme=embedding_vector,
+                    tone=np.zeros(5),  # Placeholder
+                    format=np.zeros(4),  # Placeholder
+                    trajectory=np.zeros(4),  # Placeholder
+                    creator_id=creator_id,
+                    platform=self.metadata_store.get(creator_id, {}).get('platform', 'unknown'),
+                    analyzed_at=datetime.utcnow(),
+                    post_count=0
+                )
+                
+                creators.append({
+                    'user_id': creator_id,
+                    'embedding': embedding,
+                    'metadata': self.metadata_store.get(creator_id, {})
+                })
+        
+        return creators
+    
+    def search(
+        self,
+        query_vector: np.ndarray,
+        k: int = 50,
+        return_distances: bool = False
+    ) -> List[Dict[str, Any]]:
+        """
+        Alias for search_similar with different return format.
+        Used by competitor discovery and niche discovery.
+        
+        Args:
+            query_vector: Query embedding vector
+            k: Number of neighbors to return
+            return_distances: Whether to include distances
+        
+        Returns:
+            List of creator data dicts
+        """
+        matches = self.search_similar(
+            user_vector=query_vector,
+            k=k,
+            min_similarity=0.0  # No threshold for this method
+        )
+        
+        results = []
+        for match in matches:
+            # Get embedding
+            try:
+                idx = self.creator_ids.index(match.creator_id)
+                embedding_vector = self.index.reconstruct(idx)
+            except:
+                continue
+            
+            from app.services.signals.abstract_signal import CreatorEmbedding
+            from datetime import datetime
+            
+            embedding = CreatorEmbedding(
+                theme=embedding_vector,
+                tone=np.zeros(5),
+                format=np.zeros(4),
+                trajectory=np.zeros(4),
+                creator_id=match.creator_id,
+                platform=match.metadata.get('platform', 'unknown'),
+                analyzed_at=datetime.utcnow(),
+                post_count=0
+            )
+            
+            result = {
+                'user_id': match.creator_id,
+                'embedding': embedding,
+                'metadata': match.metadata
+            }
+            
+            if return_distances:
+                result['distance'] = 1 - match.similarity_score  # Convert similarity to distance
+            
+            results.append(result)
+        
+        return results
 
 
 # Global singleton

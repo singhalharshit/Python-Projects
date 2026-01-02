@@ -1,136 +1,106 @@
-from fastapi import APIRouter, HTTPException
+"""
+Onboarding API Routes
+"""
+from fastapi import APIRouter, Depends, HTTPException, Body
+from sqlalchemy.orm import Session
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
 
-from app.services.intelligence.profile_analyzer_final import profile_analyzer
-
-from app.services.user_preferences import user_preferences_service
-from app.services.intelligence.vector_store import vector_store
+from app.core.database import get_db
+from app.services.decision_assistant import DecisionAssistant
+from app.api.deps import get_current_user
+from app.models.user import User
+from app.models.dynamic_niche import DynamicNiche
 import logging
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-class AnalyzeRequest(BaseModel):
-    username: str
-    user_id: Optional[str] = None  # For personalization
-
-class CompetitorSuggestion(BaseModel):
-    id: str
-    name: str
-    handle: str
-    avatar: str
-    subs: str
-    tags: List[str]
-    content_style: str
-    avg_views: str
-    confidence_score: Optional[float] = None
-    match_reason: Optional[str] = None
-
-class AnalysisResponse(BaseModel):
-    username: str
-    inferred_niche: str
-    suggested_competitors: List[CompetitorSuggestion]
-
-@router.post("/analyze", response_model=AnalysisResponse)
-async def analyze_profile(request: AnalyzeRequest):
-    """
-    Analyze an Instagram profile to suggest niche and competitors.
-    Supports personalization via user_id.
-    """
-    try:
-        result = profile_analyzer.analyze_profile(
-            request.username, 
-            user_id=request.user_id
-        )
-        logger.info(f"Profile analysis for {request.username}: {len(result['suggested_competitors'])} suggestions")
-        return result
-    except Exception as e:
-        logger.error(f"Error analyzing profile: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-class SimilarRequest(BaseModel):
-    selected_ids: List[str]
-    user_id: Optional[str] = None  # For personalization
-
-@router.post("/similar", response_model=List[CompetitorSuggestion])
-async def get_similar_creators(request: SimilarRequest):
-    """
-    Suggest more creators like those already selected.
-    Uses advanced similarity matching and personalization.
-    """
-    try:
-        result = profile_analyzer.get_similar_creators(
-            request.selected_ids,
-            user_id=request.user_id
-        )
-        logger.info(f"Similar creators for {len(request.selected_ids)} selections: {len(result)} suggestions")
-        return result
-    except Exception as e:
-        logger.error(f"Error fetching similar creators: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-class FeedbackRequest(BaseModel):
+class ProfileData(BaseModel):
     user_id: str
-    creator_id: str
-    action: str  # "selected" or "rejected"
-    creator_tags: List[str]
-    reason: Optional[str] = None
+    platform: Optional[str] = "instagram"
+    bio: Optional[str] = None
+    follower_count: Optional[int] = 0
+    content_samples: Optional[List[str]] = []
 
+class OnboardingResponse(BaseModel):
+    user_id: str
+    niche: Optional[Dict[str, Any]]
+    competitors: List[Dict[str, Any]]
+    onboarded_at: str
 
-@router.post("/feedback")
-async def track_feedback(request: FeedbackRequest):
+@router.post("/analyze", response_model=OnboardingResponse)
+async def analyze_profile(
+    profile: ProfileData,
+    db: Session = Depends(get_db),
+    # current_user: User = Depends(get_current_user) # Disabled for testing
+):
     """
-    Track user feedback (selections/rejections) to improve recommendations.
-    Uses vector math to update user embedding.
+    Onboard a creator by analyzing their profile.
+    
+    1. Generates embedding from bio + content
+    2. Discovers dynamic niche
+    3. Identifies competitors
+    4. Initializes behavioral learning
+    5. ✅ NEW: Stores dynamic niche in database
     """
     try:
-        # Get creator embedding from vector store
-        creator_embedding = vector_store.get_creator_embedding(request.creator_id)
+        assistant = DecisionAssistant(db)
         
-        if creator_embedding is None:
-            raise HTTPException(status_code=404, detail=f"Creator {request.creator_id} not found")
+        # ✅ STEP 1: Get onboarding result with niche discovery
+        result = await assistant.onboard_creator(
+            user_id=profile.user_id,
+            profile_data=profile.dict(),
+            content_samples=profile.content_samples
+        )
         
-        if request.action == "selected":
-            user_preferences_service.track_selection(
-                request.user_id,
-                request.creator_id,
-                creator_embedding,
-                request.creator_tags
-            )
-        elif request.action == "rejected":
-            user_preferences_service.track_rejection(
-                request.user_id,
-                request.creator_id,
-                creator_embedding,
-                request.creator_tags,
-                request.reason
-            )
+        # ✅ STEP 2: Store dynamic niche in database
+        if result.get('niche'):
+            niche_data = result['niche']
+            
+            # Check if niche already exists
+            dynamic_niche = db.query(DynamicNiche).filter_by(
+                id=niche_data['niche_id']
+            ).first()
+            
+            if not dynamic_niche:
+                # Create new niche
+                dynamic_niche = DynamicNiche(
+                    id=niche_data['niche_id'],
+                    name=niche_data['label'],
+                    embedding_centroid=niche_data['centroid'],
+                    member_count=0,
+                    is_micro=niche_data.get('is_micro', False),
+                    descriptors=niche_data.get('descriptors', [])
+                )
+                db.add(dynamic_niche)
+                logger.info(f"✅ Created new niche: {dynamic_niche.name}")
+            
+            # ✅ STEP 3: Update member count
+            dynamic_niche.member_count = db.query(User).filter(
+                User.niche_id == niche_data['niche_id']
+            ).count() + 1
+            
+            # ✅ STEP 4: Link user to niche
+            user = db.query(User).filter_by(id=profile.user_id).first()
+            if user:
+                user.niche_id = niche_data['niche_id']
+                logger.info(
+                    f"✅ Linked user {profile.user_id} to niche {dynamic_niche.name} "
+                    f"(member #{dynamic_niche.member_count})"
+                )
+            else:
+                logger.warning(f"User {profile.user_id} not found in database")
+            
+            db.commit()
+            logger.info("✅ Dynamic niche storage complete")
         else:
-            raise HTTPException(status_code=400, detail="Action must be 'selected' or 'rejected'")
+            logger.warning(f"No niche discovered for user {profile.user_id}")
         
-        logger.info(f"ML Feedback tracked: {request.action} for creator {request.creator_id} by user {request.user_id}")
+        return result
         
-        return {
-            "status": "success",
-            "message": f"ML-based feedback recorded: {request.action}",
-            "ml_powered": True
-        }
     except Exception as e:
-        logger.error(f"Error tracking feedback: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@router.get("/preferences/{user_id}")
-async def get_user_preferences(user_id: str):
-    """
-    Get user preference statistics and insights.
-    """
-    try:
-        stats = user_preferences_service.get_user_stats(user_id)
-        return stats
-    except Exception as e:
-        logger.error(f"Error fetching user preferences: {e}")
+        db.rollback()
+        logger.error(f"❌ Onboarding failed for {profile.user_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
