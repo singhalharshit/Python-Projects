@@ -1,8 +1,7 @@
 """
 Niche database model for micro-niche definitions
 """
-from sqlalchemy import Column, String, DateTime, JSON, Float
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, DateTime, JSON, Float, Uuid
 from datetime import datetime
 import uuid
 from app.core.database import Base
@@ -11,7 +10,7 @@ from app.core.database import Base
 class Niche(Base):
     __tablename__ = "niches"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     name = Column(String(100), unique=True, nullable=False, index=True)
     description = Column(String(500))
     
@@ -41,26 +40,26 @@ class Niche(Base):
 # Predefined niches for Phase 1
 PREDEFINED_NICHES = [
     {
-        "name": "AI-dev creators",
+        "name": "tech_creators",
         "description": "Developers creating AI tools, libraries, and applications",
         "data_sources": {
             "reddit": ["LocalLLaMA", "MachineLearning", "artificial"],
-            "youtube": [],  # Will be populated with channel IDs
-            "rss": []
-        }
-    },
-    {
-        "name": "Job-hunt content",
-        "description": "Career advice, job search strategies, interview prep",
-        "data_sources": {
-            "reddit": ["cscareerquestions", "jobs", "resumes"],
             "youtube": [],
             "rss": []
         }
     },
     {
-        "name": "Indie hackers",
-        "description": "Solo founders building and launching products",
+        "name": "gaming_creators",
+        "description": "Gaming news, reviews, and esports coverage",
+        "data_sources": {
+            "reddit": ["gaming", "Games", "esports"],
+            "youtube": [],
+            "rss": []
+        }
+    },
+    {
+        "name": "business_creators",
+        "description": "Entrepreneurship, startups, and marketing advice",
         "data_sources": {
             "reddit": ["SideProject", "EntrepreneurRideAlong", "startups"],
             "youtube": [],

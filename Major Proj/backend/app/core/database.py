@@ -43,4 +43,11 @@ def init_db() -> None:
     Initialize database - create all tables
     Called on application startup
     """
+    # Import all models so they are registered with Base
+    from app.models.user import User
+    from app.models.niche import Niche
+    from app.models.trend import Trend
+    from app.models.recommendation import Recommendation
+    from app.models.signal_health import SignalHealth
+    
     Base.metadata.create_all(bind=engine)

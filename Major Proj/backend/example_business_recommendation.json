@@ -1,0 +1,72 @@
+{
+  "status": "success",
+  "action": "post",
+  "niche": "business_creators",
+  "topic": "startup",
+  "confidence_score": 88,
+  "confidence_level": "high",
+  "explanation": "Signals suggest strong momentum around 'startup'. Detected across 2 source(s): Google Trends, Google News. Google Trends interest: 4/100. Google News reports 23 article(s) with 100% recent coverage. Confidence: high (88%).",
+  "reasoning": "High confidence recommendation. Multiple sources validate this trend. Good timing to create content about startup.",
+  "sources": [
+    "google_trends",
+    "google_news"
+  ],
+  "source_count": 2,
+  "signal_health": {
+    "google_trends": "healthy",
+    "google_news": "healthy"
+  },
+  "sources_checked": 2,
+  "sources_available": 2,
+  "alternatives": [
+    {
+      "topic": "business",
+      "confidence_score": 0.8833333333333334,
+      "sources": [
+        "google_trends",
+        "google_news"
+      ]
+    },
+    {
+      "topic": "productivity",
+      "confidence_score": 0.8833333333333334,
+      "sources": [
+        "google_trends",
+        "google_news"
+      ]
+    },
+    {
+      "topic": "entrepreneurship",
+      "confidence_score": 0.86,
+      "sources": [
+        "google_trends",
+        "google_news"
+      ]
+    }
+  ],
+  "timing": {
+    "urgency": "low",
+    "suggested_window": "next 3-5 days",
+    "reason": "Trend is stable. You have time to create quality content."
+  },
+  "anti_trends": [],
+  "metadata": {
+    "trends": {
+      "direction": "stable",
+      "growth_rate": 5.54,
+      "current_interest": 4
+    },
+    "news": {
+      "article_count": 23,
+      "recency_score": 1.0,
+      "sources": [
+        "Technical.ly",
+        "CTech",
+        "Yahoo Finance",
+        "Brooklyn Paper",
+        "Los Angeles Times"
+      ]
+    }
+  },
+  "generated_at": "2026-01-01T22:23:30.735223"
+}

@@ -1,8 +1,7 @@
 """
 User database model
 """
-from sqlalchemy import Column, String, DateTime, ARRAY, JSON
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, DateTime, JSON, Uuid
 from datetime import datetime
 import uuid
 from app.core.database import Base
@@ -11,15 +10,20 @@ from app.core.database import Base
 class User(Base):
     __tablename__ = "users"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     email = Column(String(255), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     
     # User preferences
-    selected_niches = Column(ARRAY(String), default=list)  # List of niche IDs
+    # Use JSON for arrays to support SQLite and Postgres
+    selected_niches = Column(JSON, default=list)  # List of niche IDs
     timezone = Column(String(50), default="UTC")
     notification_time = Column(String(10), default="09:00")  # HH:MM format
+    
+    # Competitor Intelligence
+    competitors = Column(JSON, default=list)  # List of competitor YouTube Channel IDs
+    brand_voice = Column(String(50), default="standard")  # e.g., "deep_dive", "news", "tutorial"
     
     # Additional preferences stored as JSON
     preferences = Column(JSON, default=dict)

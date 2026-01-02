@@ -1,8 +1,7 @@
 """
 Trend database model for storing detected trends
 """
-from sqlalchemy import Column, String, DateTime, Float, JSON
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, DateTime, Float, JSON, Uuid
 from datetime import datetime
 import uuid
 from app.core.database import Base
@@ -11,7 +10,7 @@ from app.core.database import Base
 class Trend(Base):
     __tablename__ = "trends"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     niche = Column(String(100), nullable=False, index=True)
     topic = Column(String(500), nullable=False)
     source = Column(String(50), nullable=False)  # "reddit", "youtube", etc.
@@ -27,17 +26,13 @@ class Trend(Base):
     last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Additional metadata
-    metadata = Column(JSON, default=dict)
+    trend_metadata = Column(JSON, default=dict)
     # Example metadata:
     # {
     #   "reddit": {
     #     "upvotes": 1500,
-    #     "comments": 250,
-    #     "subreddit": "LocalLLaMA",
-    #     "post_ids": ["abc123", "def456"]
-    #   },
-    #   "keywords": ["local-first", "AI", "privacy"],
-    #   "related_topics": ["edge computing", "on-device ML"]
+    #     ...
+    #   }
     # }
     
     def __repr__(self):

@@ -1,0 +1,64 @@
+{
+  "status": "success",
+  "action": "post",
+  "niche": "gaming_creators",
+  "topic": "games",
+  "confidence_score": 100,
+  "confidence_level": "medium",
+  "explanation": "Moderate signals detected for 'games'. Detected across 1 source(s): Google News. Google News reports 16 article(s) with 100% recent coverage. Confidence: medium (100%).",
+  "reasoning": "Moderate confidence. Consider creating content about games, but monitor for additional validation.",
+  "sources": [
+    "google_news"
+  ],
+  "source_count": 1,
+  "signal_health": {
+    "google_trends": "healthy",
+    "google_news": "healthy"
+  },
+  "sources_checked": 2,
+  "sources_available": 2,
+  "alternatives": [
+    {
+      "topic": "game",
+      "confidence_score": 1.0,
+      "sources": [
+        "google_news"
+      ]
+    },
+    {
+      "topic": "streaming",
+      "confidence_score": 0.9879227786208059,
+      "sources": [
+        "google_trends",
+        "google_news"
+      ]
+    },
+    {
+      "topic": "video",
+      "confidence_score": 0.925,
+      "sources": [
+        "google_news"
+      ]
+    }
+  ],
+  "timing": {
+    "urgency": "low",
+    "suggested_window": "next 3-5 days",
+    "reason": "Trend is stable. You have time to create quality content."
+  },
+  "anti_trends": [],
+  "metadata": {
+    "news": {
+      "article_count": 16,
+      "recency_score": 1.0,
+      "sources": [
+        "Military.com",
+        "Defector",
+        "Neowin",
+        "GamesReviews.com",
+        "Notebookcheck"
+      ]
+    }
+  },
+  "generated_at": "2026-01-01T22:22:59.046781"
+}

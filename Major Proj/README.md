@@ -12,14 +12,17 @@ Personalized daily decision assistant that tells creators exactly what to post, 
 
 ## 🚀 Features
 
+
 ### Phase 1 (Current)
-- ✅ Multi-signal trend detection (Reddit + YouTube)
+- ✅ Multi-signal trend detection (Google Trends + Google News + YouTube)
+- ✅ No API keys required for primary sources (Google Trends & News)
 - ✅ Graceful degradation with confidence scoring
 - ✅ Circuit breakers and rate limiting
 - ✅ Signal health monitoring
 - 🚧 User authentication
 - 🚧 Daily recommendation generation
 - 🚧 Flutter mobile app
+
 
 ### Future Phases
 - Anti-trend detection (saturation alerts)
@@ -96,15 +99,34 @@ flutter run
 - [Implementation Plan](docs/implementation_plan.md) - Detailed development roadmap
 - [API Documentation](http://localhost:8000/docs) - Swagger UI (when running)
 
-## 🔑 Required API Keys (Free Tier)
+## 🔑 API Keys
 
-1. **Reddit API**
+### Primary Sources (No API Keys Required!) 🎉
+
+1. **Google Trends** ✅
+   - No setup needed
+   - Just install: `pip install pytrends`
+   - Real-time trending data
+
+2. **Google News** ✅
+   - No setup needed
+   - Uses public RSS feeds
+   - Latest news coverage
+
+### Optional Sources (API Keys Optional)
+
+3. **YouTube Data API v3** (Optional)
+   - Go to https://console.cloud.google.com/apis/credentials
+   - Create project and enable YouTube Data API v3
+   - Create API key
+   - Free tier: 10,000 requests/day
+
+4. **Reddit API** (Optional)
    - Go to https://www.reddit.com/prefs/apps
    - Create an app (script type)
    - Get client ID and secret
+   - Free tier: 60 requests/minute
 
-2. **YouTube Data API v3**
-   - Go to https://console.cloud.google.com/apis/credentials
    - Create project and enable YouTube Data API v3
    - Create API key
 

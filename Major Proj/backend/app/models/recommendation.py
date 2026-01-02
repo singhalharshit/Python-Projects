@@ -1,8 +1,7 @@
 """
 Recommendation database model
 """
-from sqlalchemy import Column, String, DateTime, Integer, JSON, ForeignKey, Date
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, DateTime, Integer, JSON, ForeignKey, Date, Uuid
 from datetime import datetime, date
 import uuid
 from app.core.database import Base
@@ -11,8 +10,8 @@ from app.core.database import Base
 class Recommendation(Base):
     __tablename__ = "recommendations"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id = Column(Uuid, ForeignKey("users.id"), nullable=False, index=True)
     date = Column(Date, nullable=False, index=True)
     niche = Column(String(100), nullable=False)
     
@@ -27,41 +26,15 @@ class Recommendation(Base):
     
     # Signal health status
     signal_health = Column(JSON, default=dict)
-    # Example:
-    # {
-    #   "reddit": "healthy",
-    #   "youtube": "healthy",
-    #   "github": "degraded",
-    #   "hackernews": "failed"
-    # }
     
     # Anti-trends to avoid
     anti_trends = Column(JSON, default=list)
-    # Example:
-    # [
-    #   {
-    #     "topic": "AI agent frameworks",
-    #     "reason": "Saturation detected. 15+ posts in last 3 days",
-    #     "advice": "Avoid unless you have a unique angle"
-    #   }
-    # ]
     
     # Current vibe
     vibe = Column(JSON, default=dict)
-    # Example:
-    # {
-    #   "current_mood": "calm_clarity",
-    #   "description": "Audience receptive to technical depth",
-    #   "confidence": "medium"
-    # }
     
     # Timing suggestion
     timing = Column(JSON, default=dict)
-    # Example:
-    # {
-    #   "best_time": "2025-12-29T14:00:00Z",
-    #   "reason": "Peak engagement 2-4 PM UTC for this niche"
-    # }
     
     # User feedback and outcomes
     user_feedback = Column(String(50))  # "accepted", "ignored", "modified"

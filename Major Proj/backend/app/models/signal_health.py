@@ -1,8 +1,7 @@
 """
 Signal health monitoring model
 """
-from sqlalchemy import Column, String, DateTime, Integer
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, DateTime, Integer, Uuid
 from datetime import datetime
 import uuid
 from app.core.database import Base
@@ -11,7 +10,7 @@ from app.core.database import Base
 class SignalHealth(Base):
     __tablename__ = "signal_health"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     source = Column(String(50), unique=True, nullable=False, index=True)
     status = Column(String(20), nullable=False)  # "healthy", "degraded", "failed"
     

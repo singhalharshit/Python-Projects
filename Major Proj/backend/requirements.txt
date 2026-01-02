@@ -26,15 +26,18 @@ pydantic-settings==2.1.0
 # Data Collection - Free Tier APIs
 praw==7.7.1  # Reddit API
 google-api-python-client==2.116.0  # YouTube API
-feedparser==6.0.11  # RSS feeds
+pytrends==4.9.2  # Google Trends (no API key needed!)
+feedparser==6.0.11  # RSS feeds (Google News)
 requests==2.31.0
 beautifulsoup4==4.12.3  # Minimal scraping fallback
 aiohttp==3.9.1
 
 # AI/ML
-openai==1.10.0  # Optional for premium users
-transformers==4.36.2  # Free local models
-torch==2.1.2  # For local ML
+# AI/ML
+sentence-transformers==2.2.2
+scikit-learn==1.3.2
+torch==2.1.2 --index-url https://download.pytorch.org/whl/cpu  # Use CPU version for lighter install
+transformers==4.36.2
 
 # Utilities
 python-dateutil==2.8.2

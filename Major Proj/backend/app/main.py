@@ -44,7 +44,9 @@ async def startup_event():
         logger.info("Database initialized successfully")
     except Exception as e:
         logger.error(f"Failed to initialize database: {e}")
-        raise
+        logger.warning("Continuing startup without database connection. Some features may use fallback storage.")
+        # Do not raise exception so server can start
+        # raise
     
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"CORS origins: {settings.cors_origins_list}")
@@ -77,11 +79,16 @@ async def health_check():
 
 
 # Import and include routers
-from app.api.routes import auth, users
+from app.api.routes import auth, users, recommendations
 
 app.include_router(auth.router, prefix="/api/auth", tags=["authentication"])
 app.include_router(users.router, prefix="/api/users", tags=["users"])
-# app.include_router(recommendations.router, prefix="/api/recommendations", tags=["recommendations"])
+app.include_router(recommendations.router, prefix="/api/recommendations", tags=["recommendations"])
+
+
+# [NEW] Onboarding API
+from app.api.routes import onboarding
+app.include_router(onboarding.router, prefix="/api/onboarding", tags=["onboarding"])
 
 
 

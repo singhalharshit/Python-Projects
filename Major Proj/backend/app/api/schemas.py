@@ -2,7 +2,7 @@
 Pydantic schemas for request/response validation
 """
 from pydantic import BaseModel, EmailStr, Field
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 from uuid import UUID
 
@@ -79,6 +79,43 @@ class NicheResponse(BaseModel):
 
 # ===== Recommendation Schemas =====
 
+class AlternativeTopic(BaseModel):
+    """Alternative topic suggestion"""
+    topic: str
+    confidence_score: float
+    sources: List[str]
+
+
+class TimingSuggestion(BaseModel):
+    """Timing suggestion from engine"""
+    urgency: str
+    suggested_window: str
+    reason: str
+
+
+class RecommendationGenerated(BaseModel):
+    """Real-time recommendation from engine"""
+    status: str
+    action: str = Field(..., description="POST, WAIT, ENGAGE")
+    niche: str
+    topic: str
+    confidence_score: int
+    confidence_level: str = Field(..., description="low, medium, high")
+    explanation: str
+    reasoning: str
+    sources: List[str]
+    source_count: int
+    alternatives: List[AlternativeTopic] = []
+    timing: Optional[TimingSuggestion] = None
+    metadata: Dict[str, Any] = {}
+    generated_at: str
+
+    # [NEW] Fields for Deep Personalization
+    suggested_angles: List[str] = []
+    topic_direction: Optional[str] = None
+    avoid_advice: Optional[str] = None
+
+
 class AntiTrend(BaseModel):
     """Anti-trend (saturated topic) schema"""
     topic: str
@@ -93,26 +130,17 @@ class Vibe(BaseModel):
     confidence: str
 
 
-class Timing(BaseModel):
-    """Posting timing suggestion"""
-    best_time: datetime
-    reason: str
-
-
 class RecommendationResponse(BaseModel):
-    """Daily recommendation response"""
+    """Stored recommendation response from DB"""
     id: UUID
-    date: str
+    date: datetime
     niche: str
     action: str
     topic: Optional[str]
     reasoning: str
     confidence_score: int
     certainty_level: str
-    signal_health: dict
-    anti_trends: List[AntiTrend]
-    vibe: Vibe
-    timing: Optional[Timing]
+    generated_data: Optional[dict] = Field(None, description="Full JSON from engine")
     created_at: datetime
     
     class Config:

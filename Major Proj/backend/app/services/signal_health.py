@@ -25,7 +25,11 @@ class SignalHealthMonitor:
         ).first()
         
         if not signal:
-            signal = SignalHealth(source=source)
+            signal = SignalHealth(
+                source=source,
+                success_count=0,
+                failure_count=0
+            )
             self.db.add(signal)
         
         signal.last_success = datetime.utcnow()
@@ -56,7 +60,11 @@ class SignalHealthMonitor:
         ).first()
         
         if not signal:
-            signal = SignalHealth(source=source)
+            signal = SignalHealth(
+                source=source,
+                success_count=0,
+                failure_count=0
+            )
             self.db.add(signal)
         
         signal.last_failure = datetime.utcnow()

@@ -1,0 +1,64 @@
+{
+  "status": "success",
+  "action": "post",
+  "niche": "tech_creators",
+  "topic": "learning",
+  "confidence_score": 100,
+  "confidence_level": "medium",
+  "explanation": "Moderate signals detected for 'learning'. Detected across 1 source(s): Google News. Google News reports 17 article(s) with 100% recent coverage. Confidence: medium (100%).",
+  "reasoning": "Moderate confidence. Consider creating content about learning, but monitor for additional validation.",
+  "sources": [
+    "google_news"
+  ],
+  "source_count": 1,
+  "signal_health": {
+    "google_trends": "healthy",
+    "google_news": "healthy"
+  },
+  "sources_checked": 2,
+  "sources_available": 2,
+  "alternatives": [
+    {
+      "topic": "machine",
+      "confidence_score": 1.0,
+      "sources": [
+        "google_news"
+      ]
+    },
+    {
+      "topic": "your",
+      "confidence_score": 0.9,
+      "sources": [
+        "google_news"
+      ]
+    },
+    {
+      "topic": "python",
+      "confidence_score": 0.8833333333333334,
+      "sources": [
+        "google_trends",
+        "google_news"
+      ]
+    }
+  ],
+  "timing": {
+    "urgency": "low",
+    "suggested_window": "next 3-5 days",
+    "reason": "Trend is stable. You have time to create quality content."
+  },
+  "anti_trends": [],
+  "metadata": {
+    "news": {
+      "article_count": 17,
+      "recency_score": 1.0,
+      "sources": [
+        "Military Times",
+        "Phys.org",
+        "Federal News Network",
+        "How-To Geek",
+        "Stars and Stripes"
+      ]
+    }
+  },
+  "generated_at": "2026-01-01T22:22:28.670013"
+}
