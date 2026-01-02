@@ -21,3 +21,5 @@ Thumbs.db
 *.swp
 .venv
 venv
+__pycache__
+.env
