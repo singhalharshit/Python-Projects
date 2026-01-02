@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 
-from app.services.intelligence.profile_analyzer_v2 import profile_analyzer
+from app.services.intelligence.profile_analyzer_final import profile_analyzer
 
 from app.services.user_preferences import user_preferences_service
 from app.services.intelligence.vector_store import vector_store

@@ -162,10 +162,11 @@ class _CompetitorSelectScreenState extends State<CompetitorSelectScreen> {
             child: GridView.builder(
               padding: const EdgeInsets.all(16),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.75,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
               ),
               itemCount: _allSuggestions.length,
               itemBuilder: (context, index) {
@@ -189,7 +190,7 @@ class _CompetitorSelectScreenState extends State<CompetitorSelectScreen> {
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white.withOpacity(0.1) : Colors.white.withOpacity(0.03),
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected ? Theme.of(context).colorScheme.primary : Colors.white10,
             width: isSelected ? 2 : 1,
@@ -198,38 +199,41 @@ class _CompetitorSelectScreenState extends State<CompetitorSelectScreen> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildAvatar(creator['avatar'], creator['name']),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text(
                     creator['name'],
                     textAlign: TextAlign.center,
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 13),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     creator['subs'],
-                    style: GoogleFonts.inter(color: Colors.white38, fontSize: 12),
+                    style: GoogleFonts.inter(color: Colors.white38, fontSize: 11),
                   ),
                 ],
               ),
             ),
             if (isSelected)
               Positioned(
-                top: 12,
-                right: 12,
-                child: Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary, size: 24),
+                top: 8,
+                right: 8,
+                child: Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary, size: 20),
               ),
             Positioned(
-              bottom: 8,
-              right: 8,
+              bottom: 4,
+              right: 4,
               child: IconButton(
-                icon: const Icon(Icons.close, size: 16, color: Colors.white24),
+                icon: const Icon(Icons.close, size: 14, color: Colors.white24),
                 onPressed: () => _rejectCreator(creator['id']),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
             ),
           ],
@@ -240,8 +244,8 @@ class _CompetitorSelectScreenState extends State<CompetitorSelectScreen> {
 
   Widget _buildAvatar(String? url, String name) {
     return Container(
-      width: 70,
-      height: 70,
+      width: 50,
+      height: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white10, width: 2),
@@ -250,7 +254,7 @@ class _CompetitorSelectScreenState extends State<CompetitorSelectScreen> {
             : null,
       ),
       child: (url == null || !url.startsWith('http'))
-          ? Center(child: Text(name[0], style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)))
+          ? Center(child: Text(name[0], style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
           : null,
     );
   }
