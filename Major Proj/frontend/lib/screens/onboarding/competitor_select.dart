@@ -162,7 +162,6 @@ class _CompetitorSelectScreenState extends State<CompetitorSelectScreen> {
             child: GridView.builder(
               padding: const EdgeInsets.all(16),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 0.75,
                 crossAxisSpacing: 12,

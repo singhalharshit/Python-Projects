@@ -158,6 +158,133 @@ class CreatorDatabase:
         
         logger.info(f"FAISS index built successfully with {len(self.creators)} creators")
     
+    def add_creator(
+        self,
+        id: str,
+        platform: str,
+        name: str,
+        handle: str,
+        bio: str,
+        follower_count: int,
+        embedding: List[float],
+        metadata: Dict[str, Any],
+        content_samples: List[str],
+        tags: List[str],
+        niche: str,
+        content_style: str
+    ):
+        """
+        Add a new creator to the database (and JSON fallback).
+        """
+        creator = {
+            "id": id,
+            "name": name,
+            "platform": platform,
+            "handle": handle,
+            "bio": bio,
+            "follower_count": follower_count,
+            "embedding": embedding,
+            "metadata": metadata,
+            "content_samples": content_samples,
+            "tags": tags,
+            "niche": niche,
+            "content_style": content_style,
+            "avg_views": metadata.get("view_count", "N/A"),
+            "language": "en" # Default
+        }
+        
+        # 1. Update In-Memory
+        # Check if exists
+        exists = False
+        for i, c in enumerate(self.creators):
+            if c['id'] == id:
+                self.creators[i] = creator
+                exists = True
+                break
+        
+        if not exists:
+            self.creators.append(creator)
+            
+        # 2. Save to Database (Primary)
+        try:
+             # Import locally to avoid circular imports
+            from sqlalchemy import create_engine, text
+            from sqlalchemy.orm import sessionmaker
+            from app.core.config import settings
+            import json as j
+            
+            engine = create_engine(settings.DATABASE_URL)
+            Session = sessionmaker(bind=engine)
+            session = Session()
+            
+            # Check if exists in DB
+            result = session.execute(text("SELECT id FROM creators WHERE id = :id"), {"id": id})
+            if not result.fetchone():
+                query = text("""
+                    INSERT INTO creators (
+                        id, platform, name, handle, bio, subscriber_count, 
+                        language, niche, embedding, content_samples, tags, metadata
+                    ) VALUES (
+                        :id, :platform, :name, :handle, :bio, :sub_count,
+                        :lang, :niche, :embedding, :samples, :tags, :meta
+                    )
+                """)
+                
+                # Format embedding for ARRAY compatible input
+                embedding_val = embedding
+                if isinstance(embedding, np.ndarray):
+                    embedding_val = embedding.tolist()
+                
+                session.execute(query, {
+                    "id": id,
+                    "platform": platform,
+                    "name": name,
+                    "handle": handle,
+                    "bio": bio,
+                    "sub_count": follower_count,
+                    "lang": "en",
+                    "niche": niche,
+                    "embedding": embedding_val,
+                    "samples": j.dumps(content_samples),
+                    "tags": j.dumps(tags),
+                    "meta": j.dumps(metadata)
+                })
+                session.commit()
+                logger.info(f"Saved creator {name} to PostgreSQL")
+            session.close()
+            
+        except Exception as e:
+            logger.error(f"Failed to save to DB: {e}")
+            # Fallback to JSON is already handled below if we want, 
+            # but actually the JSON block below is unconditional in my previous code?
+            # Let's keep JSON as backup backup.
+
+        # 3. Save to JSON (Persistence Fallback)
+        try:
+            import os
+            # Save to backend root
+            json_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'scraped_creators.json')
+            
+            # Convert numpy arrays to lists for JSON
+            serializable_creators = []
+            for c in self.creators:
+                c_copy = c.copy()
+                if isinstance(c_copy['embedding'], np.ndarray):
+                    c_copy['embedding'] = c_copy['embedding'].tolist()
+                serializable_creators.append(c_copy)
+                
+            with open(json_path, 'w') as f:
+                json.dump(serializable_creators, f, indent=2)
+                
+            logger.info(f"Saved creator {name} to JSON fallback")
+            
+            # Rebuild index to include new creator
+            if self.is_indexed:
+                self.build_index()
+                
+        except Exception as e:
+            logger.error(f"Failed to save to JSON: {e}")
+
     def get_creator_by_id(self, creator_id: str) -> Dict[str, Any]:
         """Get full creator data by ID"""
         for creator in self.creators:
