@@ -313,6 +313,9 @@ class VectorStore:
                 post_count=0
             )
             
+            # ✅ Attach metadata to embedding object for easy access
+            embedding.metadata = match.metadata
+            
             result = {
                 'user_id': match.creator_id,
                 'embedding': embedding,

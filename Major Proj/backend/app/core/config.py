@@ -47,6 +47,11 @@ class Settings(BaseSettings):
     CIRCUIT_BREAKER_THRESHOLD: int = Field(default=5, env="CIRCUIT_BREAKER_THRESHOLD")
     CIRCUIT_BREAKER_TIMEOUT: int = Field(default=60, env="CIRCUIT_BREAKER_TIMEOUT")
     
+    # Instagram API Configuration
+    INSTAGRAM_APP_ID: str = Field(default="", env="INSTAGRAM_APP_ID")
+    INSTAGRAM_APP_SECRET: str = Field(default="", env="INSTAGRAM_APP_SECRET")
+    INSTAGRAM_ACCESS_TOKEN: str = Field(default="", env="INSTAGRAM_ACCESS_TOKEN")
+    
     @property
     def cors_origins_list(self) -> List[str]:
         """Parse CORS origins string into list"""

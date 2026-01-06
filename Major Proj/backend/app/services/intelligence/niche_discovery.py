@@ -442,3 +442,9 @@ class NicheDiscoveryEngine:
             # Simple momentum calculation
             niche.momentum = min(signal_count / 100.0, 1.0)
             self.db.commit()
+
+
+# ✅ Global getter function
+def get_niche_discovery(db: Session) -> NicheDiscoveryEngine:
+    """Get or create NicheDiscoveryEngine instance"""
+    return NicheDiscoveryEngine(db)

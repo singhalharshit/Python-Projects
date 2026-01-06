@@ -8,6 +8,19 @@ from pydantic import BaseModel
 
 from app.core.database import get_db
 from app.services.decision_assistant import DecisionAssistant
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.core.database import get_db
+# from app.core.auth import get_current_user
+from app.api.routes.auth import get_current_user
+from app.models.user import User
+
+from app.services.intelligence.embedding_service import EmbeddingService
+from app.services.intelligence.realtime_preference_learner import RealTimePreferenceLearner
+from app.services.intelligence.competitor_discovery_v2 import CompetitorDiscoveryV2
+from app.services.intelligence.vector_store import VectorStore
+
 
 router = APIRouter()
 
@@ -69,3 +82,41 @@ async def discover_competitors(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+    
+@router.post("/{competitor_id}/feedback")
+async def competitor_feedback(
+    competitor_id: str,
+    action: str,  # 'accept' | 'reject'
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if action not in ("accept", "reject"):
+        raise HTTPException(status_code=400, detail="Invalid action")
+
+    learner = RealTimePreferenceLearner(
+        db=db,
+        embedding_service=EmbeddingService()
+    )
+
+    learner.update(
+        user_id=str(current_user.id),
+        competitor_id=competitor_id,
+        action=action
+    )
+
+    discovery = CompetitorDiscoveryV2(
+        vector_store=VectorStore(),
+        preference_learner=learner
+    )
+
+    new_competitors = discovery.discover(
+        user_id=str(current_user.id),
+        limit=20
+    )
+
+    return {
+        "status": "updated",
+        "action": action,
+        "new_suggestions": new_competitors
+    }

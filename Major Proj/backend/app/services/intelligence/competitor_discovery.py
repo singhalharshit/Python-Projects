@@ -35,6 +35,9 @@ class CompetitorProfile:
     
     def to_dict(self) -> Dict[str, Any]:
         """✅ Convert to dictionary with frontend-compatible fields"""
+        # Extract metadata if available
+        metadata = getattr(self.embedding, 'metadata', {})
+        
         return {
             # Backend fields
             'creator_id': self.creator_id,
@@ -48,11 +51,11 @@ class CompetitorProfile:
             'follower_count': self.follower_count,
             'engagement_rate': self.engagement_rate,
             
-            # ✅ Frontend-compatible fields
-            'name': self.creator_id or 'Unknown Creator',  # Use creator_id as name for now
-            'subs': f"{self.follower_count:,}" if self.follower_count else 'N/A',
+            # ✅ Frontend-compatible fields with metadata
+            'name': metadata.get('name', self.creator_id) or self.creator_id,
+            'subs': f"{self.follower_count:,}" if self.follower_count else f"{metadata.get('followers', 0):,}" if metadata.get('followers') else 'N/A',
             'avatar': None,  # Will be populated by Instagram scraper
-            'tags': [self.platform] if self.platform else [],
+            'tags': [metadata.get('niche', self.platform)] if metadata.get('niche') else [self.platform] if self.platform else [],
             'confidence_score': float(self.total_score * 100),  # Convert to percentage
             'match_reason': self._generate_match_reason()
         }

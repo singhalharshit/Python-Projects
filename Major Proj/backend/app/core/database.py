@@ -54,4 +54,10 @@ def init_db() -> None:
     from app.models.dynamic_niche import DynamicNiche
     from app.models.user_competitor import UserCompetitor
     
+    # New models for Creator Similarity Engine
+    from app.models.creator_post import CreatorPost
+    from app.models.competitor_candidate import CompetitorCandidate
+    from app.models.user_competitor_feedback import UserCompetitorFeedback
+    from app.models.user_preference_weights import UserPreferenceWeights
+    
     Base.metadata.create_all(bind=engine)

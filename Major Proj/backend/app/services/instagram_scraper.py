@@ -30,7 +30,18 @@ class InstagramScraper:
         # Try to import instaloader
         try:
             import instaloader
-            self.L = instaloader.Instaloader()
+            self.L = instaloader.Instaloader(
+                # ✅ Use better settings to avoid blocks
+                quiet=True,
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                download_pictures=False,
+                download_videos=False,
+                download_video_thumbnails=False,
+                download_geotags=False,
+                download_comments=False,
+                save_metadata=False,
+                compress_json=False,
+            )
             self.available = True
             logger.info("✅ Instagram scraper initialized (instaloader)")
         except ImportError:
@@ -88,37 +99,54 @@ class InstagramScraper:
         if cached:
             return cached
         
-        try:
-            self._rate_limit_wait()
-            
-            logger.info(f"Fetching Instagram profile: @{username}")
-            profile = instaloader.Profile.from_username(
-                self.L.context,
-                username
-            )
-            
-            data = {
-                'username': profile.username,
-                'full_name': profile.full_name,
-                'biography': profile.biography,
-                'followers': profile.followers,
-                'following': profile.followees,
-                'posts': profile.mediacount,
-                'profile_pic_url': profile.profile_pic_url,
-                'is_verified': profile.is_verified,
-                'is_business_account': profile.is_business_account,
-                'external_url': profile.external_url,
-                'fetched_at': datetime.now().isoformat()
-            }
-            
-            self._set_cache(cache_key, data)
-            logger.info(f"✅ Fetched @{username}: {data['followers']} followers")
-            
-            return data
-            
-        except Exception as e:
-            logger.error(f"Failed to fetch @{username}: {e}")
-            return None
+        # ✅ Try multiple times with different approaches
+        max_retries = 3
+        
+        for attempt in range(max_retries):
+            try:
+                self._rate_limit_wait()
+                
+                logger.info(f"Fetching Instagram profile: @{username} (attempt {attempt + 1}/{max_retries})")
+                
+                import instaloader
+                profile = instaloader.Profile.from_username(
+                    self.L.context,
+                    username
+                )
+                
+                data = {
+                    'username': profile.username,
+                    'full_name': profile.full_name,
+                    'biography': profile.biography,
+                    'followers': profile.followers,
+                    'following': profile.followees,
+                    'posts': profile.mediacount,
+                    'profile_pic_url': profile.profile_pic_url,
+                    'is_verified': profile.is_verified,
+                    'is_business_account': profile.is_business_account,
+                    'external_url': profile.external_url,
+                    'fetched_at': datetime.now().isoformat()
+                }
+                
+                self._set_cache(cache_key, data)
+                logger.info(f"✅ Fetched @{username}: {data['followers']} followers")
+                
+                return data
+                
+            except Exception as e:
+                logger.error(f"Attempt {attempt + 1} failed for @{username}: {e}")
+                
+                if attempt < max_retries - 1:
+                    # Wait longer between retries
+                    import time
+                    wait_time = (attempt + 1) * 10  # 10s, 20s, 30s
+                    logger.info(f"Waiting {wait_time}s before retry...")
+                    time.sleep(wait_time)
+                else:
+                    logger.error(f"All {max_retries} attempts failed for @{username}")
+                    return None
+        
+        return None
     
     def find_similar_accounts(
         self,
