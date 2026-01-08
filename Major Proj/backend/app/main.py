@@ -98,8 +98,10 @@ async def startup_event():
                     logger.info(f"Vector Store initialized with {len(ids)} creators")
                     with open("startup_log.txt", "a") as f:
                         f.write(f"Vector Store index built with {len(ids)} creators\n")
+                        return f"{ids} and here the following ids."
                 else:
                     logger.warning("No creators with embeddings found in database")
+                    return ""
             else:
                 logger.warning("No creators found in database")
                 

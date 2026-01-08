@@ -2179,3 +2179,287 @@ LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
 FROM creators 
 WHERE creators.embedding IS NOT NULL]
 (Background on this error at: https://sqlalche.me/e/20/f405)
+
+--- Startup at 2026-01-07 14:55:28.974290 ---
+Database initialized
+Querying creators...
+Vector Store init failed: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\Coding Practice\Python Projects\Python-Projects\Major Proj\backend\app\main.py", line 70, in startup_event
+    creators = db.query(Creator).filter(Creator.embedding.isnot(None)).all()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2693, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2847, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2190, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\sql\elements.py", line 517, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 2344, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+--- Startup at 2026-01-07 14:58:54.287014 ---
+Database initialized
+Querying creators...
+Vector Store init failed: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\Coding Practice\Python Projects\Python-Projects\Major Proj\backend\app\main.py", line 70, in startup_event
+    creators = db.query(Creator).filter(Creator.embedding.isnot(None)).all()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2693, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2847, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2190, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\sql\elements.py", line 517, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 2344, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+--- Startup at 2026-01-07 14:59:09.361907 ---
+Database initialized
+Querying creators...
+Vector Store init failed: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\Coding Practice\Python Projects\Python-Projects\Major Proj\backend\app\main.py", line 70, in startup_event
+    creators = db.query(Creator).filter(Creator.embedding.isnot(None)).all()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2693, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2847, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2190, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\sql\elements.py", line 517, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 2344, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+--- Startup at 2026-01-07 14:59:24.207946 ---
+Database initialized
+Querying creators...
+Vector Store init failed: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\Coding Practice\Python Projects\Python-Projects\Major Proj\backend\app\main.py", line 70, in startup_event
+    creators = db.query(Creator).filter(Creator.embedding.isnot(None)).all()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2693, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\query.py", line 2847, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\session.py", line 2190, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\sql\elements.py", line 517, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 2344, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\singh\AppData\Roaming\Python\Python312\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column creators.verified does not exist
+LINE 1: ...ors_tags, creators.metadata AS creators_metadata, creators.v...
+                                                             ^
+
+[SQL: SELECT creators.id AS creators_id, creators.platform AS creators_platform, creators.name AS creators_name, creators.handle AS creators_handle, creators.bio AS creators_bio, creators.subscriber_count AS creators_subscriber_count, creators.language AS creators_language, creators.niche AS creators_niche, creators.embedding AS creators_embedding, creators.content_samples AS creators_content_samples, creators.tags AS creators_tags, creators.metadata AS creators_metadata, creators.verified AS creators_verified, creators.category AS creators_category, creators.avg_engagement_rate AS creators_avg_engagement_rate, creators.posting_frequency AS creators_posting_frequency, creators.created_at AS creators_created_at, creators.updated_at AS creators_updated_at 
+FROM creators 
+WHERE creators.embedding IS NOT NULL]
+(Background on this error at: https://sqlalche.me/e/20/f405)
