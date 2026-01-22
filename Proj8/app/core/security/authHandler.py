@@ -1,6 +1,6 @@
+import time
 from jose import JWTError,jwt
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-
 
 SECRET_KEY="SOME_RANDOM_ACCESS_KEY"
 ALGORITHM = "HS256"
@@ -13,4 +13,9 @@ class AuthHandler(object):
     
     @staticmethod
     def sign_jwt(user_id:int):
-        
+        payload={
+            "user_id":user_id,
+            "expires":time.time()+900
+        }
+        token = jwt.encode(payload,SECRET_KEY,algorithm=ALGORITHM)
+        return token
