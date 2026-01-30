@@ -19,3 +19,9 @@ class AuthHandler(object):
         }
         token = jwt.encode(payload,SECRET_KEY,algorithm=ALGORITHM)
         return token
+
+    @staticmethod
+    def decode_jwt(token:str)-> dict:
+        try:
+            decode_token = jwt.decode(token=token,algorithms=ALGORITHM)
+            return decode_token if decode_token["expires"]>= time.time() else None
