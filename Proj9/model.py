@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class BookCreateModel(BaseModel):
     title:str
@@ -10,6 +11,16 @@ class BookCreateModel(BaseModel):
     
 class bookReturnModel(BookCreateModel):
     id:int
+
+
+class BookUpdateModel(BaseModel):
+    title: Optional[str] = None
+    author: Optional[str] = None
+    publisher: Optional[str] = None
+    published_date: Optional[str] = None
+    page_count: Optional[int] = None
+    language: Optional[str] = None
+
 
 # "id": 1,
 #         "title": "Think Python",
