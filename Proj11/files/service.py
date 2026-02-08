@@ -1,17 +1,25 @@
+import hashlib
 from sqlalchemy.orm import Session
 from db.models import FileUpload, FileResult
-from files.parser import parse_file
+from files.parser import parse
+from files.validator import validate
+from files.normalizer import normalize
 
-def process_file(
-    db: Session,
-    filename: str,
-    content: str,
-    file_type: str,
-    user_id: int
-):
+def checksum(content: bytes):
+    return hashlib.sha256(content).hexdigest()
+
+def process_file(db: Session, file, user_id: int):
+    content = file.file.read()
+    hash_val = checksum(content)
+
+    existing = db.query(FileUpload).filter_by(checksum=hash_val).first()
+    if existing:
+        return existing.id, "DUPLICATE"
+
     upload = FileUpload(
-        filename=filename,
-        file_type=file_type,
+        filename=file.filename,
+        checksum=hash_val,
+        status="PROCESSING",
         uploaded_by=user_id
     )
     db.add(upload)
@@ -19,21 +27,25 @@ def process_file(
     db.refresh(upload)
 
     try:
-        parsed = parse_file(content, file_type)
+        rows = parse(content.decode(), file.filename.split(".")[-1])
+        valid, invalid = validate(rows)
+        normalized = normalize(valid)
+
         result = FileResult(
             file_id=upload.id,
-            normalized_data=parsed,
-            error_report=None
+            success_rows=normalized,
+            failed_rows=invalid
         )
         upload.status = "SUCCESS"
+
     except Exception as e:
         result = FileResult(
             file_id=upload.id,
-            normalized_data=None,
-            error_report={"error": str(e)}
+            success_rows=[],
+            failed_rows=[{"error": str(e)}]
         )
         upload.status = "FAILED"
 
     db.add(result)
     db.commit()
-    return upload.id
+    return upload.id, upload.status
